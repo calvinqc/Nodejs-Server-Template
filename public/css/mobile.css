@@ -1,0 +1,123 @@
+/* Skeleton Overrides */
+
+blockquote {
+  margin: 0 2rem;
+  padding: 0.5rem 0 2rem 2rem;
+}
+
+/* -------- Header/Navigation ---------- */
+
+header .column {
+  text-align: center;
+}
+
+nav {
+  float: none;
+}
+
+a.item,
+a.item:visited {
+  margin: 2rem 1rem 0 1rem;
+}
+
+/* -------- Hello Section ---------- */
+
+section h3.section-name {
+  margin: 0.5rem 0 0 0;
+  border-bottom: 1px dashed #ccc;
+}
+
+section#hello a.item {
+  display: none;
+}
+
+/* in case I want the small links... */
+/* section#hello .column:nth-child(1) a.item { */
+/*   margin: 0rem 1.5rem 2.5rem 1.5rem; */
+/* } */
+
+/* section#hello .column:nth-child(3) a.item { */
+/*   margin: 1.5rem 1.5rem 0rem 1.5rem; */
+/* } */
+
+/* section#hello i.fa { */
+/*   font-size: 1.4rem; */
+/*   display: inline; */
+/* } */
+
+section#hello h1 {
+  font-size: 2.8rem;
+}
+
+section#hello h4 {
+  font-size: 1.6rem;
+}
+
+/* -------- Latest Posts ---------- */
+
+.post-summary time {
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  display: block;
+  float: none;
+}
+
+.post-summary .category {
+  display: none;
+}
+
+/* -------- Recent Projects ---------- */
+
+.project-summary {
+  min-height: 0;
+}
+
+.project-summary p.detail {
+  margin-right: 0.5rem;
+}
+
+/* -------- Recent Publications ---------- */
+
+.post-summary .front-matter {
+  text-align: left;
+  margin: 0;
+}
+
+.post-summary .front-matter p,
+.post-summary .front-matter time {
+  display: inline;
+}
+
+.post-summary .title {
+  width: 100%;
+}
+
+.post-summary a.item {
+  display: none;
+}
+
+/* -------- Article Header ---------- */
+
+section#article-header a.arrow {
+  display: none;
+}
+
+section#article-header .title {
+  padding: 0;
+}
+
+/* -------- Article ---------- */
+
+section#article article {
+  margin-right: 0;
+  margin: 0;
+}
+
+article p {
+  margin: 2rem 0 3rem 0;
+}
+
+#side {
+  display: none;
+  width: 0px;
+}
