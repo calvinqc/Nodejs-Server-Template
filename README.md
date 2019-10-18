@@ -1,4 +1,4 @@
-# Your First Web App using M.E.R.N Stack with ES6
+# Build A Web App using M.E.R.N Stack with ES6
 
 > This is my personal website built using ReactJS and NodeJS/ExpressJS. This project serves as a guide/template to help you to get started with Web Development, it contains 2 parts:
 > 1. Built your simple __SERVER__ App with NodeJS/ExpressJS.
@@ -32,6 +32,7 @@ Before installing, [download and install Node.js](https://nodejs.org/en/download
 Good to have:
 - [Github](https://gist.github.com/derhuerst/1b15ff4652a867391f03)
 - Text Editor: [VSCode](https://code.visualstudio.com/) OR ...anything you like.
+- [Postman](https://www.getpostman.com/): this will allow you test your API (GET, POST, PUT, DELETE, etc.)
 
 ## Server
 > Step-by-step how to create an Express app from scratch so you'll know how all the files are related, and learn what each file does.
@@ -55,13 +56,13 @@ This is where you store all the project dependencies, and scripts to start your 
 
 ```javascript
 {
-	"name": "server",
-	"version": "1.0.0",
-    "private": true,
-    "scripts": {
-		"start": "node -r esm app.js",
-		"dev": "nodemon -r esm app.js"
-    },
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node -r esm app.js",
+    "dev": "nodemon -r esm app.js"
+  },
 }
 ```
 
@@ -115,11 +116,13 @@ $ npm i --save express esm nodemon
 
 ### App.js
 
+The first step is to create a file that will contain our code for Node.js Server
+
 ```sh
 $ touch app.js
 ```
 
-This `app.js` will start a server on PORT 8080 and initiliaze all the dependences that your app requires.
+This `app.js` will start a server on PORT 8080 and initiliaze all the dependences that your app requires. Add this simple code to app.js
 
 ```javascript
 import express from 'express';
@@ -141,7 +144,19 @@ app.listen(8080, () => {
 - `app.get('/', (req, res) => {});` - create a `GET/` API
 - `app.listen(8080, () => {})` - listen on `PORT: 8080`
 
-### Using dependencies
+Now, you can try and run your first simple app by run 
+
+```sh
+$ npm start
+```
+
+OR (To run automatically whenever you make a new changes)
+
+```sh
+$ npm run dev
+```
+
+### Using Dependencies/Middleware
 
 Express is a framework, but it doesn't mean that it contains all you need to make a great web app. Then, you'll need to import more powerful libraries online.
 
@@ -158,7 +173,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 ```
 
-### Controller (APIs)
+### Create RESTful APIs
 
 Now, your project is getting complicated, and you don't want to put all your API into `app.js`, which is used only for starting & initializing your app.
 
@@ -177,9 +192,9 @@ import express from 'express';
 const userController = express.Router();
 
 userController.get('/', (req, res) => {
-	res.status(200).json({
-		status: 'success'
-	});
+  res.status(200).json({
+    status: 'success'
+  });
 });
 
 export default userController;
@@ -199,23 +214,23 @@ Open `index.js` in your controller and import this:
 import userController from './user.controller';
 
 export {
-    userController,
-	abcController,
-	xyzController
+  userController,
+  abcController,
+  xyzController
 };
 ```
 
-#### Controller Uses
+#### Adding Endpoint to Express App
 
-You just created the Controller but you haven't told Express App to use it. 
+You just created the Controller but you haven't told Express App to __use__ it. 
 
 In `app.js`, add this:
 
 ```javascript
 import { 
-	userController, 
-	studentController, 
-	teacherController 
+  userController, 
+  abcController, 
+  xyzController 
 } from './controller';
 
 app.use('/', userController);
@@ -225,7 +240,7 @@ app.use('/xyz', xyzController);
 
 ## Database
 
-You can choose any Database Language to learn, and apply. In this project, I will use [MongoDB]() as it has a good library to interact with NodeJS. 
+You can choose any Database Language to learn, and apply. In this project, I will use [MongoDB](https://www.mongodb.com/) as it has a good library to interact with NodeJS. 
 
 ### Install
 
@@ -235,7 +250,7 @@ You will need to install [Mongoose](https://mongoosejs.com/): "Mongoose provides
 $ npm i mongoose mongodb
 ```
 
-### DB Connect
+### Connection
 
 In your `app.js`, add & modify:
 
@@ -250,19 +265,152 @@ app.listen(8080, () => {
 });
 ```
 
+### Schema
+
+```sh
+$ mkdir database && mkdir database/models && mkdir database/schemas
+$ touch schemas/user.schema.js
+$ npm i sha256
+```
+
+You first create the schema, and initialize all the atrribute for that Object in the database. For ex: User schema will have 2 attributes: `email` & `hashedPassword`.
+
+Open user.schema.js:
+
+```javascript
+import { Schema } from 'mongoose';
+import sha256 from 'sha256';
+
+const userSchema = new Schema({
+  hashedPassword: { type: String, required: true },
+  email: { type: String, required: true },
+});
+
+/**
+ * @param {*} password
+ */
+userSchema.methods.comparePassword = function comparePassword(password) {
+  return this.hashedPassword === sha256(password);
+};
+
+export default userSchema;
+```
+
+### Models
+
+Then, you want to create a model for that each schema you create and add them into index.js (so you only need to call one file):
+
+```sh
+$ touch models/index.js && touch models/user.model.js
+```
+
+Open user.model.js:
+
+```javascript
+import mongoose from 'mongoose';
+import userSchema from '../schemas/user.schema';
+
+const User = mongoose.model('User', userSchema);
+export default User;
+```
+
+Open models/index.js:
+```javascript
+import User from './user.model';
+
+export {
+  User,
+};
+```
+
+## Save data using API
+
+Open `controller/user.controller.js`, add replace `userController.get('/', ...)` with these 2 new APIs(Endpoints):
+
+```javascript
+import { 
+  User
+} from '../database/models';
+
+import sha256 from 'sha256';
+
+/**
+  * GET/
+  * retrieve and display all Users in the User Model
+  */
+userController.get('/', (req, res) => {
+  User.find({}, (err, result) => {
+    res.status(200).json({
+      data: result,
+    })
+  })
+});
+
+/**
+  * POST/
+  * Add a new User to your database
+  */
+userController.post('/add-user', (req, res) => {
+  const { email, password } = req.body;
+  
+  const userData = {
+    email,
+    hashedPassword: sha256(password)
+  }
+
+  const newUser = new User(data);
+
+  newUser
+    .save()
+    .then(data => {
+      res.status(200).send(data);
+    })
+    .catch(err => {
+      res.status(400).send("unable to save to database");
+    });
+});
+```
+
+## Testing
+
+Run your server 
+
+```sh
+$ npm run dev
+```
+
+Open Postman, if you don't know how to use it. Please watch this tutorial on [Youtube](https://www.youtube.com/watch?v=t5n07Ybz7yI). 
+
+Use POST method and enter `localhost:8080/add-user`. This will call the "/add-user" API. 
+
+Add this to your body:
+
+```
+{
+  'email': 'calvin.nvqc@gmail.com',
+  'password': '123456789'
+}
+```
+
+Check if your user data is save to database, open Web Browser and enter `localhost:8080/`
+
+Now, you're done! Congratulation on building your first API.
+
 ## Project Structure
 
 ```bash
 server
-├── controller      - Storing all APIs of the app including POST, PUT, DELETE
-├── database        - 
-	├── model       - including setup/schema/model of MySQL database
-	├── schema		- including setup/schema/model of MySQL database
-├── global.js		- config ESLint Airbnb Coding Style
-├── .eslintrc		- config ESLint Airbnb Coding Style
+└── controller      - Storing all APIs of the app including POST, PUT, DELETE
+  ├── index.js
+  └── user.controller.js
+└── database 
+  ├── model	    - store all the models of the project
+  └──schema	    - create a schema(attribute of the model) for each model
+├── global.js	    - storing your configuration attribute
+├── .eslintrc	    - config ESLint Airbnb Coding Style
 ├── .babelrc        - migrate from ES6 to ES5 to run on different browsers
 ├── package.json    - config ESLint Airbnb Coding Style
-└── App.js			- Everything a server needs to start
+└── App.js	    - Everything a server needs to start
 ```
 
 ## Start Application
@@ -296,5 +444,4 @@ From your project's root folder, install all dependencies and devDependencies:
 $ npm run i-server
 ```
 
-Now, run you server: `npm run server` -> open web browsern on `http://localhost:8080`
-
+Open web browser on `http://localhost:8080`

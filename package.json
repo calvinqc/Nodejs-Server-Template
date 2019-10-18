@@ -1,0 +1,13 @@
+{
+  "name": "Personal Website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "i-client": "cd client/ && npm i",
+    "i-server": "cd server/ && npm i",
+    "i": "npm run i-client && npm run i-backend",
+    "client": "cd client/ && npm start",
+    "server": "cd server/ && npm run dev",
+    "start": "npm run client && npm run server"
+  }
+}
