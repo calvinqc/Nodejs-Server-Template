@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "mongodb": "^3.3.3",
     "mongoose": "^5.7.5",
+    "react-redux": "^7.1.1",
     "sha256": "^0.2.0",
     "typed.js": "^2.0.10"
   },
