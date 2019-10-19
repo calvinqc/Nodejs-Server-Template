@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import resume from "../assets/resume.pdf";
 
 class Navbar extends Component {
+  onResumeClick() {
+    window.open(resume);
+  }
+
   render() {
     return (
       <header class="header">
@@ -17,7 +22,7 @@ class Navbar extends Component {
                   {" "}
                   <i class="fa fa-home"></i> Home{" "}
                 </a>
-                <a href="/resume.pdf" target="_blank" class="item">
+                <a onClick={this.onResumeClick} class="item">
                   <i class="fa fa-file-text-o"></i> Resume
                 </a>
                 <a href="/projects" class="item">
