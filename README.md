@@ -1,28 +1,10 @@
-# Build A Web App using M.E.R.N Stack with ES6
+Build A Web App using M.E.R.N Stack with ES6
 
 > This is my personal website built using ReactJS and NodeJS/ExpressJS. This project serves as a guide/template to help you to get started with Web Development, it contains 2 parts:
 > 1. Built your simple __SERVER__ App with NodeJS/ExpressJS.
 > 2. Built your full-stack ReactJS app with your SERVER from (1).
 
-## Table of Contents
-- [Install](#install)
-- [Introduction](#introduction)
-- [Server](#server)	
-	- [Project Structure](#project-structure)
-	- [ESLint](#ESLint-Airbnb)
-	- [Babel](#babel)
-	- [Package.json](#package.json)
-	- [App.js](#app.js)
-	- [Using Dependencies](#using-dependencies)
-	- [Controller(APIs)](#controller-(apis))
-		- [Index.js](#index.js))
-		- [API Uses](#api-uses)
-	- [Database](#database)
-	- [Project Structure](#project-structure)
-	- [Starting Server](#start-application)
-- [Client](#client)
-
-## Install
+# Requirement
 
 This is a [Node.js](https://nodejs.org/en/) module available through the
 [npm registry](https://www.npmjs.com/).
@@ -34,10 +16,9 @@ Good to have:
 - Text Editor: [VSCode](https://code.visualstudio.com/) OR ...anything you like.
 - [Postman](https://www.getpostman.com/): this will allow you test your API (GET, POST, PUT, DELETE, etc.)
 
-## Server
+# Getting Started
 > Step-by-step how to create an Express app from scratch so you'll know how all the files are related, and learn what each file does.
 
-### Project Structure
 Open your Terminal and redirect you to the directory where you want to place your project:
 
 ```sh
@@ -66,7 +47,9 @@ This is where you store all the project dependencies, and scripts to start your 
 }
 ```
 
-### ESLint Airbnb
+# Install
+
+## ESLint Airbnb
 
 **Install [ESLint airbnb](https://github.com/airbnb/javascript)**
 
@@ -84,7 +67,7 @@ Create `.eslintrc` in your project and add this to your .eslintrc:
 }   
 ```
 
-### Babel
+## Babel
 
 **Install [Babel](https://babeljs.io/)** 
 
@@ -102,7 +85,7 @@ Create `.babelrc` in your project and add this:
 }
 ```
 
-### Package.json 
+## Package.json 
 You just created the Controller but you haven't told Express App to use it. 
 
 Install the first 3 dependenceis:
@@ -114,7 +97,7 @@ $ npm i --save express esm nodemon
 1. [esm](https://github.com/standard-things/esm): This go with `babel` and allows you to run ES6.
 2. [nodemon](https://nodemon.io/): This is my favorite, it allows you to re-start automatically the server whenever you make changes in the server.
 
-### App.js
+# Our Server App
 
 The first step is to create a file that will contain our code for Node.js Server
 
@@ -156,7 +139,7 @@ OR (To run automatically whenever you make a new changes)
 $ npm run dev
 ```
 
-### Using Dependencies/Middleware
+# Using Dependencies/Middleware
 
 Express is a framework, but it doesn't mean that it contains all you need to make a great web app. Then, you'll need to import more powerful libraries online.
 
@@ -173,7 +156,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 ```
 
-### Create RESTful APIs
+# Create RESTful APIs
 
 Now, your project is getting complicated, and you don't want to put all your API into `app.js`, which is used only for starting & initializing your app.
 
@@ -204,7 +187,7 @@ Basically, __Express__ router is a class which helps us to create router handler
 
 In more complex project, you might have other controller files for different type of API's purpose, might be `abc.controller.js`, `xyz.controller.js`.
 
-#### Index.js
+## Index.js
 
 For scalability, assume your project has many controllers. You don't want to keep importing all controllers to your `app.js`. Then, you want to use 1 file to import all controllers.
 
@@ -220,7 +203,7 @@ export {
 };
 ```
 
-#### Adding Endpoint to Express App
+## Adding Endpoint to Express App
 
 You just created the Controller but you haven't told Express App to __use__ it. 
 
@@ -238,11 +221,11 @@ app.use('/abc', abcController);
 app.use('/xyz', xyzController);
 ```
 
-## Database
+# Database
 
 You can choose any Database Language to learn, and apply. In this project, I will use [MongoDB](https://www.mongodb.com/) as it has a good library to interact with NodeJS. 
 
-### Install
+## Install
 
 You will need to install [Mongoose](https://mongoosejs.com/): "Mongoose provides a straight-forward, schema-based solution to model your application data."
 
@@ -250,7 +233,7 @@ You will need to install [Mongoose](https://mongoosejs.com/): "Mongoose provides
 $ npm i mongoose mongodb
 ```
 
-### Connection
+## Connection
 
 In your `app.js`, add & modify:
 
@@ -265,7 +248,7 @@ app.listen(8080, () => {
 });
 ```
 
-### Schema
+## Schema
 
 ```sh
 $ mkdir database && mkdir database/models && mkdir database/schemas
@@ -296,7 +279,7 @@ userSchema.methods.comparePassword = function comparePassword(password) {
 export default userSchema;
 ```
 
-### Models
+## Models
 
 Then, you want to create a model for that each schema you create and add them into index.js (so you only need to call one file):
 
@@ -323,7 +306,7 @@ export {
 };
 ```
 
-## Save data using API
+# Save data using API
 
 Open `controller/user.controller.js`, add replace `userController.get('/', ...)` with these 2 new APIs(Endpoints):
 
@@ -371,7 +354,7 @@ userController.post('/add-user', (req, res) => {
 });
 ```
 
-## Testing
+# Testing
 
 Run your server 
 
@@ -396,7 +379,7 @@ Check if your user data is save to database, open Web Browser and enter `localho
 
 Now, you're done! Congratulation on building your first API.
 
-## Project Structure
+# Project Structure
 
 ```bash
 server
@@ -413,7 +396,7 @@ server
 └── App.js	    - Everything a server needs to start
 ```
 
-## Start Application
+# Start Application
 In the root folder of your project. (If you're in a server project, run `cd ..`).
 
 Then, create a `package.json`
